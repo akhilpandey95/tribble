@@ -36,11 +36,11 @@ req('http://www.engadget.com/', function(err, res, html) {
                         l('header.post-header').each(function(i, element) {
                                 var content = l(this).children().children().children('.h2');
                                 var data = content.text();
-                               // console.log(data);
+                                console.log(data);
                                 store.push(data);
-                                console.log(store);
+                               // console.log(store);
                         });
-
+                        /*
                         // Gives the top 5 current posts on the page
                         l('div').attr('id','carousel').each(function(i, element) {
                                 var content = l(this).children().children('.always');
@@ -57,7 +57,7 @@ req('http://www.engadget.com/', function(err, res, html) {
                         l('li.last').each(function(i, element) {
                                 var content = l(this);
                                 console.log(content.text());
-                       });
+                       });*/
                 }
                 });
 
