@@ -36,6 +36,7 @@ npm install
 - CruchGear (testing)
 - Gizmodo (testing)
 - Wired (not tested)
+- r/technology (reddit)
 
 ###Contributions
 
