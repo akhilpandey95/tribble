@@ -28,6 +28,19 @@ app.listen(port, function() {
         console.log("Listening on port " + port);
 });
 
+req('http://www.reddit.com/r/technology', function(err, res, html) {
+                if(!err && res.statusCode == 200) {
+                        var l = c.load(html);
+                        
+                        // Info from Reddit (r/technology)
+                        l('div.entry').each(function(i, element) {
+                                var content = l(this).children().children().next('.title');
+                                var data = content.text();
+                                console.log(data);
+                        });
+                }
+                });
+
 req('http://www.engadget.com/', function(err, res, html) {
                 if(!err && res.statusCode == 200) {
                         var l = c.load(html);
