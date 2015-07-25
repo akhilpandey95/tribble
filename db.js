@@ -1,5 +1,6 @@
-var r = require('rethinkdb')
-var assert = require('assert')
+var r = require('rethinkdb'),
+    db = require('./config')(dbconfig),
+    assert = require('assert');
 
 function call(callback) {
         r.connect({
@@ -47,6 +48,31 @@ function free(conn) {
         else {
                 conn.close();
         }
+}
+
+exports.getdata = function(callback) {
+        connection(function(err, conn) {
+                if(err) {
+                        return callback(er);
+                }
+
+                r.table('tribble_links').run(conn, function(err, res) {
+                        if(err) {
+                                free(conn);
+                                callback(err);
+                        }
+                        
+                        res.toArray(function(err, data) {
+                                if(err) {
+                                        callback(err);
+                                }
+                                else {
+                                        callback(null, data);
+                                }
+                                free(conn);
+                        });
+                });
+        });
 }
 
 var conn = 
