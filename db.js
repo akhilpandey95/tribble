@@ -11,6 +11,44 @@ function call(callback) {
         });
 }
 
+function connection(callback) {
+        if(useConnpooling) {
+                console.log("[LOG_INFO] Initiating a pooled connection");
+                connectionPool.acquire(function(err, conn) {
+                        if(err) {
+                                callback(err);
+                        }
+                        else {
+                                console.log("[LOG_INFO] Connection Pooled %s", conn._id);
+                        }
+                });
+        }
+        else {
+                r.connect({
+                        host : db.host,
+                        port : db.port
+                }, function(err, conn) {
+                        console.log("[ERR] Couldnot connect %s on %s port", db['host'], db['port']);
+                        callback(err);
+                }
+                else {
+                        conn.use(db.db);
+                        console.log("[DB] Connection created");
+                        callback(null, conn);
+                }
+                });
+}
+
+function free(conn) {
+        console.log("[LOG-INFO]: Releasing connection: %s", conn._id);
+        if(useConnPooling) {
+                connectionPool.release(conn);
+        }
+        else {
+                conn.close();
+        }
+}
+
 var conn = 
 r.connect({
         host : 'localhost',
@@ -25,7 +63,7 @@ r.connect({
  * (date, by, title, content)
  * primary key : date
  */
-
+/*
 call(function(err, conn) {
         if(err) throw err;
 
@@ -50,4 +88,4 @@ call(function(err, conn) {
         });
 
 });
-
+*/
