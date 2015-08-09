@@ -1,5 +1,5 @@
-/* Links that are essential : 
- * 1. For prev page = http://www.engadget.com/page/n-1/ 
+/* Links that are essential :
+ * 1. For prev page = http://www.engadget.com/page/n-1/
  * 2. For curr page = http://www.engadget.com/
  * 3. Example of the url : http://www.engadget.com/2015/06/04/apple-watch-reader-review-roundup/
  */
@@ -31,7 +31,7 @@ app.listen(port, function() {
 req('http://www.reddit.com/r/technology', function(err, res, html) {
                 if(!err && res.statusCode == 200) {
                         var l = c.load(html);
-                        
+
                         // Info from Reddit (r/technology)
                         l('div.entry').each(function(i, element) {
                                 var content = l(this).children().children().next('.title');
@@ -44,7 +44,7 @@ req('http://www.reddit.com/r/technology', function(err, res, html) {
 req('http://www.engadget.com/', function(err, res, html) {
                 if(!err && res.statusCode == 200) {
                         var l = c.load(html);
-                        
+
                         // Gives all the headlines together
                         l('header.post-header').each(function(i, element) {
                                 var content = l(this).children().children().children('.h2');
@@ -59,7 +59,7 @@ req('http://www.engadget.com/', function(err, res, html) {
                                 var content = l(this).children().children('.always');
                                 console.log(content.text());
                         });
-                        
+
                         // Gives the top 2 current posts on the page
                         l('li.top2').each(function(i, element) {
                                 var content = l(this);
