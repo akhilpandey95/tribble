@@ -1,0 +1,39 @@
+{
+  "name": "tribble",
+  "version": "0.0.2",
+  "description": "This is a scraper that pulls information from the site and then loads it into a page making the user to view all the Posts without redirecting to the website.",
+  "author": "Akhil Pandey <akhilhector.1@gmail.com>",
+  "contributors": [{
+  "name": "Akhil Pandey",
+  "email": "akhilhector.1@gmail.com"
+}],
+  "scripts": {
+    "start": "node app.js",
+    "predeploy": "echo im about to deploy",
+    "postdeploy": "echo ive deployed",
+    "prepublish": "coffee --bare --compile --output lib/foo src/foo/*.coffee"
+  },
+  "main": "./app.js",
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/AkhilHector/tribble"
+},
+  "bugs": {
+  "url": "https://github.com/AkhilHector/tribble/issues"
+},
+  "keywords": [
+  "tribble",
+  "nodejs-scraper",
+  "cheerio-scraper"
+],
+  "dependencies": {
+    "async": "~0.8.0",
+    "express": "4.13.x",
+    "cheerio": "0.19.x",
+    "request": "2.60.x",
+    "rethinkdb": "2.0.x"
+  },
+  "subdomain": "foobar",
+  "analyze": true,
+  "license": "MIT"
+}
