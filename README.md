@@ -32,11 +32,10 @@ npm install
 #####Support:
 
 - Engadget (supported)
-- Ycombinator News (tested/minor-changed)
 - CruchGear (testing)
 - Gizmodo (testing)
 - Wired (not tested)
-- r/technology (reddit)
+- r/technology-reddit (supported)
 
 ###Contributions
 
