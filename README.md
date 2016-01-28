@@ -29,6 +29,11 @@ npm install
 
 > Since this parses information by DOM manipulations we might have the chancesof broken links as well as inability to parse/scrape the information. But if such a situation arises the repo will be updated to suit the modification of the new site.
 
+###Node v4.x & Previous versions Support
+There is absolutely no issue when the script is run using node v4.x or any
+current stable version. Although if you face trouble while retrieving the
+information, please do report as an issue.
+
 #####Support:
 
 - Engadget (supported)
