@@ -44,7 +44,7 @@ req('http://www.reddit.com/r/technology', function(err, res, html) {
 req('http://www.gizmodo.in/gadgets', function(err,res, html) {
                 if(!err && res.statusCode == 200) {
                         var l = c.load(html);
-                        
+
                         // Headlines from the Gadgets page of Gizmodo
                         l('article.article').each(function (i, element) {
                                 var content = l(this).children().children().children('h2');
