@@ -3,30 +3,60 @@
  * 2. For curr page = http://www.engadget.com/
  * 3. Example of the url : http://www.engadget.com/2015/06/04/apple-watch-reader-review-roundup/
  */
-var e = require('express')
-var c = require('cheerio')
-var fs = require('fs')
-var req = require('request')
-var post = require('request')
-var store = new Array();
-var app = e();
-var router = e.Router();
-var port = process.env.PORT || 8100;
+var http = require("http"),
+    e = require("express"),
+    c = require("cheerio"),
+    fs = require("fs"),
+    req = require("request");
 
-app.use(e.static('assets'));
+module.exports.router = function() {
+    var port = process.env.PORT || 8100,
+        app = e(),
+        api = e(),
+        appr = e.Router(),
+        apir = e.Router();
 
-console.log("Express Serving is starting")
-console.log("Starting Scraping")
+    app.set('title', "Tribble | Content Scraping");
+    app.use(e.static('assets'));
 
-router.get('/', function(req, res) {
-        var data = fs.readFileSync('index.html', 'utf8');
+    // The APP router
+    appr.get('/', function(req, res) {
+        var data = fs.readFileSync("index.html", "UTF-8");
         res.send(data.toString());
-});
+    });
 
-app.use('/', router);
-app.listen(port, function() {
-        console.log("Listening on port " + port);
-});
+    appr.get('/:somevalue', function(req, res) {
+        var data = req.params.somevalue;
+        res.send("Sorry cannot GET/ " + data + " on this page");
+    });
+
+    appr.post('/:somevalue', function(req, res) {
+        var data = req.params.somevalue;
+        res.send("Sorry cannot make a POST/ " + data + " to this page");
+    });
+
+    // The API router
+    apir.get('/', function(req, res) {
+        res.send("The API powering tribble");
+    });
+
+    apir.get('/post/:value', function(req, res) {
+        var data = req.params.value;
+        res.json({
+            request     : 'you have requested for ' + data,
+            site        : 'yet to come',
+            description : 'yet to come',
+            timestamp   : 'yet to come' 
+        })
+    });
+
+    app.use('/', appr);
+    app.use('/api', apir);
+
+    htpp.createServer(app).listen(port, function() {
+       console.log("Serving at http://localhost:", port); 
+    });
+}
 
 req('http://www.reddit.com/r/technology', function(err, res, html) {
                 if(!err && res.statusCode == 200) {
@@ -86,15 +116,4 @@ req('http://www.engadget.com/', function(err, res, html) {
                        });*/
                 }
                 });
-
-post('http://localhost:8100/', function(err, res, html) {
-        if(!err && res.statusCode == 200) {
-                var p = c.load(html);
-                p('h3.panel-title').each(function(i, element) {
-                        var content = p(this);
-                        console.log(content.text());
-                });
-        }
-});
-
 
