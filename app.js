@@ -16,7 +16,8 @@ module.exports.router = function() {
         appr = e.Router(),
         apir = e.Router();
 
-    app.set('title', "Tribble | Content Scraping");
+    app.set('title', "Tribble | The UI");
+    api.set('title', "Tribble | The API");
     app.use(e.static('assets'));
 
     // The APP router
@@ -43,77 +44,98 @@ module.exports.router = function() {
     apir.get('/post/:value', function(req, res) {
         var data = req.params.value;
         res.json({
-            request     : 'you have requested for ' + data,
-            site        : 'yet to come',
-            description : 'yet to come',
-            timestamp   : 'yet to come' 
-        })
+            request : 'you have requested for ' + data,
+            site    : {
+                engadget : {
+                    headline : 'the headline',
+                    detail   : 'more info'
+                },
+                reddit   : {
+                    headline : 'the headline',
+                    detail   : 'more info'
+                },
+                gizmodo  : {
+                    headline : 'the headline',
+                    detail   : 'more info'
+                }
+            }
+        });
     });
 
     app.use('/', appr);
     app.use('/api', apir);
 
-    htpp.createServer(app).listen(port, function() {
+    http.createServer(app).listen(port, function() {
        console.log("Serving at http://localhost:", port); 
     });
 }
 
-req('http://www.reddit.com/r/technology', function(err, res, html) {
-                if(!err && res.statusCode == 200) {
-                        var l = c.load(html);
+function getreddit() {
+    var store = "";
+    req('http://www.reddit.com/r/technology', function(err, res, html) {
+        if(!err && res.statusCode == 200) {
+            var l = c.load(html);
 
-                        // Info from Reddit (r/technology)
-                        l('div.entry').each(function(i, element) {
-                                var content = l(this).children().children().next('.title');
-                                var data = content.text();
-                                console.log(data);
-                        });
-                }
-                });
+            // Info from Reddit (r/technology)
+            l('div.entry').each(function(i, element) {
+                var content = l(this).children().children().next('.title');
+                var data = content.text();
+                store += data;
+            });
+        }
+    });
+    return store;
+}
 
-req('http://www.gizmodo.in/gadgets', function(err,res, html) {
-                if(!err && res.statusCode == 200) {
-                        var l = c.load(html);
+function getgizmodo() {
+    var store = "";
+    req('http://www.gizmodo.in/gadgets', function(err,res, html) {
+        if(!err && res.statusCode == 200) {
+            var l = c.load(html);
 
-                        // Headlines from the Gadgets page of Gizmodo
-                        l('article.article').each(function (i, element) {
-                                var content = l(this).children().children().children('h2');
-                                var data = content.text();
-                                console.log(data);
-                        });
-                }
-                });
+            // Headlines from the Gadgets page of Gizmodo
+            l('article.article').each(function (i, element) {
+                var content = l(this).children().children().children('h2');
+                var data = content.text();
+                store += data;
+            });
+        }
+    });
+    return store;
+}
 
-req('http://www.engadget.com/', function(err, res, html) {
-                if(!err && res.statusCode == 200) {
-                        var l = c.load(html);
+function getengadget() {
+    var store = "";
+	req('http://www.engadget.com/', function(err, res, html) {
+		if(!err && res.statusCode == 200) {
+			var l = c.load(html);
 
-                        // Gives all the headlines together
-                        l('header.post-header').each(function(i, element) {
-                                var content = l(this).children().children().children('.h2');
-                                var data = content.text();
-                                console.log(data);
-                                store.push(data);
-                               // console.log(store);
-                        });
-                        /*
-                        // Gives the top 5 current posts on the page
-                        l('div').attr('id','carousel').each(function(i, element) {
-                                var content = l(this).children().children('.always');
-                                console.log(content.text());
-                        });
+            // Gives all the headlines together
+            l('header.post-header').each(function(i, element) {
+            	var content = l(this).children().children().children('.h2');
+            	var data = content.text();
+            	console.log(data);
+            	store += data;
+               });
+            /*
+            // Gives the top 5 current posts on the page
+            l('div').attr('id','carousel').each(function(i, element) {
+                    var content = l(this).children().children('.always');
+                    console.log(content.text());
+            });
 
-                        // Gives the top 2 current posts on the page
-                        l('li.top2').each(function(i, element) {
-                                var content = l(this);
-                                console.log(content.text());
-                       });
+            // Gives the top 2 current posts on the page
+            l('li.top2').each(function(i, element) {
+                    var content = l(this);
+                    console.log(content.text());
+           });
 
-                        // Gives the last current post on the page
-                        l('li.last').each(function(i, element) {
-                                var content = l(this);
-                                console.log(content.text());
-                       });*/
-                }
-                });
-
+            // Gives the last current post on the page
+            l('li.last').each(function(i, element) {
+                    var content = l(this);
+                    console.log(content.text());
+                });*/
+		}
+	});
+    return store;
+}
